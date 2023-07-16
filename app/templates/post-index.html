@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block body %}
+    <div class="content">
+        <h2>掲示板一覧</h2>
+        <a href="{{ url_for('post_create_page') }}"><h3 class="post-a">投稿する</h3></a>
+        <br>
+        <ul>
+            {% for post in posts %}
+            <li style="text-decoration: underline;">
+                <a href="{{ url_for("post_detail_page", post_id=post["id"]) }}">
+                    {{ post["title"] }}
+                    <span style="font-size: 80%;"> from {{ post["user_id"] }}</span>
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+        <br>
+        {% if not posts %}
+        <p>投稿はありません</p>
+        {% endif %}
+        <a href="{{ url_for('post_create_page') }}"><h3 class="post-a">投稿する</h3></a>
+        <style>
+            .post-a {
+                border: 1px solid white;
+                width: 100px;
+                text-align: center;
+            }
+        </style>
+    </div>
+{% endblock %}

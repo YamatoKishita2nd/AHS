@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block body %}
+    <div class="content">
+        <h2>練習問題</h2>
+        <a href="{{ url_for("quiz_detail_page", quiz_id=1) }}"><h3 style="border: 1px solid white;">練習問題を開始する</h3></a>
+    </div>
+{% endblock %}

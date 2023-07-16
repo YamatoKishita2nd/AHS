@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block body %}
+    <div class="content">
+        <h2>結果画面</h2>
+        <div id="score">10問中{{ score["score"] }}問正解です。</div>
+        <br>
+        <a href="{{ url_for('quiz_index') }}">
+            <button>もう一度解く</button>
+        </a>
+    </div>
+    <script>
+        sessionStorage.setItem('correctNum', 0);
+    </script>
+{% endblock %}

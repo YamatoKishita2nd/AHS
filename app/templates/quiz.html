@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% block body %}
+  <div class="content">
+    <h2>{{ quiz["title"] }}</h2>
+    <pre>{{ quiz["body"] }}</pre>
+    <button class="choice" data-number="1">{{ quiz["choice_1"] }}</button>
+    <button class="choice" data-number="2">{{ quiz["choice_2"] }}</button>
+    <button class="choice" data-number="3">{{ quiz["choice_3"] }}</button>
+    <button class="choice" data-number="4">{{ quiz["choice_4"] }}</button>
+    <button class="choice" data-number="5">{{ quiz["choice_5"] }}</button>
+    <div id="correct" style="display: none;">{{ quiz["correct_choice"] }}</div>
+    {% if quiz["id"] == 1 %}
+    <script>
+      sessionStorage.setItem('correctNum', 0);
+    </script>
+    {% endif %}
+    <div id="result"></div>
+    <pre id="explanation" style="display: none; max-width: 1000px;">{{ quiz["explanation"] }}</pre>
+    {% if quiz["id"] != 10 %}
+    <a href="{{ url_for("quiz_detail_page", quiz_id= quiz["id"] + 1 ) }}">
+      <button id="next" disabled>次の問題</button>
+    </a>
+    {% elif quiz["id"] == 10 %}
+    <form id="go-result-form" action="{{url_for('quiz_save_result')}}" method="POST">
+      <button id="go-result" type="submit" disabled>
+        終了
+      </button>
+    </form>
+    {% endif %}
+    <style>
+      pre {
+        font-size: 16px;
+      }
+      .choice {
+        margin: 10px 10px;
+        background-color: black;
+        color: white;
+        cursor: pointer;
+      }
+      .choice:disabled {
+        cursor: not-allowed;
+      }
+      #next {
+        cursor: pointer;
+      }
+      #next:disabled {
+        display: none;
+      }
+      #result {
+        margin: 10px 0;
+      }
+      #explanation {
+        margin: 10px 0;
+      }
+    </style>
+    <script>
+      let choices = document.querySelectorAll('.choice');
+      let correctChoice = document.getElementById('correct');
+      let result = document.getElementById('result');
+      let explanation = document.getElementById('explanation');
+      let next = document.getElementById('next');
+      let goResultForm = document.getElementById('go-result-form');
+      let goResult = document.getElementById('go-result');
+
+      let resInput = document.createElement('input');
+      resInput.type = 'hidden';
+      resInput.name = 'correct_num';
+      resInput.value = sessionStorage.getItem('correctNum');
+      if (goResultForm) {
+        goResultForm.appendChild(resInput);
+      }
+
+      choices.forEach(choice => {
+        choice.addEventListener('click', () => {
+          choices.forEach(choice => {
+            choice.disabled = true;
+          });
+          if (next) {
+            next.disabled = false;
+          } else if (goResult) {
+            goResult.disabled = false;
+          }
+
+          if (!sessionStorage.getItem('correctNum')) {
+            sessionStorage.setItem('correctNum', 0);
+          }
+          if (choice.dataset.number === String(correctChoice.innerHTML)) {
+            result.innerHTML = '正解です';
+            result.style.color = 'lime';
+            let correctNum = Number(sessionStorage.getItem('correctNum'));
+            sessionStorage.setItem('correctNum', correctNum + 1);
+            resInput.value = sessionStorage.getItem('correctNum');
+          } else {
+            result.innerHTML = '不正解です';
+            result.style.color = 'red';
+          }
+          explanation.style.display = 'block';
+        });
+      });
+
+    </script>
+  </div>
+{% endblock %}

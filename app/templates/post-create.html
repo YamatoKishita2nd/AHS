@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block body %}
+    <div class="content">
+        <form action="{{ url_for('post_create') }}" method="post" enctype="multipart/form-data">
+            <label for="title">タイトル</label><br>
+            <input id="title" type="text" name="title"/><br>
+            <label for="body">内容</label><br>
+            <textarea id="body" name="body" placeholder="" type="text"></textarea><br>
+            <button type="submit" id="post-button">投稿</button>
+        </form>
+    </div>
+    <video src="{{url_for('static', path='/videos/ad-video.mp4')}}" id="ad-video" controls></video>
+    <style>
+        form {
+            margin-left: 200px;
+        }
+        #title,
+        #body {
+            width: 500px;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid white;
+            background-color: #101010;
+            color: white;
+        }
+        #body {
+            height: 300px;
+            resize: none;
+        }
+        button {
+            width: 100px;
+            height: 30px;
+            border: 1px solid white;
+            background-color: black;
+            color: white;
+            cursor: pointer;
+        }
+        #ad-video {
+            width: 800px;
+            height: auto;
+            display: none;
+            position: fixed;
+            margin: 0 auto;
+            z-index: 100;
+        }
+    </style>
+    <script>
+        let postButton = document.getElementById('post-button');
+        let adVideo = document.getElementById('ad-video');
+        adVideo.style.width = window.innerWidth * 0.8 + 'px';
+        adVideo.style.marginLeft = window.innerWidth * 0.1 + 'px';
+        postButton.addEventListener('click', () => {
+            adVideo.style.display = 'block';
+            adVideo.load();
+            adVideo.play();
+        });
+    </script>
+{% endblock %}

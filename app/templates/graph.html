@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block body %}
+    <div class="content">
+        <h2>グラフ画面</h2>
+        <div>平均得点は{{ avg }}点です。</div>
+        <canvas id="graph-canvas" width="500" height="500"></canvas>
+    </div>
+    <div id="graph-score" style="display: none;">
+    {% for score in scores %}
+        <span>{{ score['score'] }}</span>
+    {% endfor %}
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.2.0/chart.min.js" integrity="sha512-VMsZqo0ar06BMtg0tPsdgRADvl0kDHpTbugCBBrL55KmucH6hP9zWdLIWY//OTfMnzz6xWQRxQqsUFefwHuHyg==" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@next/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+    <script>
+        let graphScores = document.getElementById('graph-score');
+        let xLabels = [];
+        let yLabels = [];
+        for (let i = 0; i < graphScores.children.length; i++) {
+            xLabels.push(i+1 + '回目');
+            yLabels.push(graphScores.children[i].innerHTML);
+        }
+        let context = document.getElementById('graph-canvas').getContext('2d')
+        new Chart(context, {
+        type: 'bar',
+        data: {
+            labels: xLabels,
+            datasets: [{
+            label: "練習問題得点",
+            data: yLabels,
+            backgroundColor: 'white',
+            }],
+        },
+        options: {
+            responsive: false
+        }
+        })
+    </script>
+{% endblock %}

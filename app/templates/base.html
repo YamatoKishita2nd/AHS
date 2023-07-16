@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AHS</title>
+    <!-- <link rel="stylesheet" type="text/css" href="{{url_for('static', path='/styles/styles.css')}}"> -->
+    <style>
+        body {
+            display: block;
+            padding: 0;
+            background-color: #101010;
+            color: white;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 50px;
+        }
+        #logo {
+            user-select: none;
+        }
+        li {
+            list-style-type: none;
+        }
+        a {
+            text-decoration: none;
+            color: white;
+        }
+        main {
+            display: flex;
+        }
+        #base-nav {
+            margin: 0 10px;
+        }
+        #base-nav a {
+            display: block;
+            margin: 30px 0;
+        }
+        .content {
+            margin-left: 50px;
+        }
+        button {
+            padding: 5px 10px;
+            border: 1px solid white;
+            background-color: #101010;
+            color: white;
+        }
+        input {
+            padding: 5px 10px;
+            border: 1px solid white;
+            background-color: #101010;
+            color: white;
+        }
+        #canvas {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            background-color: skyblue;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <a href="{{ url_for('dashboard_index') }}" id="logo"><h1>AHS</h1></a>
+    <div>
+    {% if not user %}
+        <ul>
+            <li>
+                <a href="{{ url_for('register') }}">新規登録</a>
+            </li>
+            <li>
+                <a href="{{ url_for('index') }}">ログイン</a>
+            </li>
+        </ul>
+    {% else %}
+        <h3>{{ user["username"] }}さん</h3>
+        <a href="{{ url_for('logout') }}" methods="post">ログアウト</a>
+    {% endif %}
+    </div>
+    {% if error %}
+        <p style="color: red">{{ error }}</p>
+    {% endif %}
+    {% if information %}
+        <p style="color: cornflowerblue">{{ information }}</p>
+    {% endif %}
+</header>
+<main>
+    <nav id="base-nav">
+        <a href="{{ url_for('dashboard_index') }}">ホーム</a>
+        <a href="{{ url_for('quiz_index') }}">練習問題を解く</a>
+        <a href="{{ url_for('graph_index') }}">グラフを見る</a>
+        <a href="{{ url_for('post_index') }}">掲示板を見る</a>
+    </nav>
+    {% block body %}
+    {% endblock %}
+</main>
+<div id="ad">
+    <canvas id="canvas" width="200" height="200"></canvas>
+</div>
+<script>
+    let canvas = document.getElementById('canvas');
+    let ctx = canvas.getContext('2d');
+    ctx.font = '24px MS ゴシック';
+    ctx.fillText('青山学院大学', 10, 50);
+    ctx.fillText('の学生さん！', 10, 80);
+    ctx.fillText('(株)ABCで', 10, 110);
+    ctx.fillText('働きませんか？', 10, 140);
+</script>
+</body>
+</html>

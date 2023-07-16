@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block body %}
+    <div class="content">
+        <h2>{{ post["title"] }}</h2>
+        <p>投稿者: {{ post["user_id"] }}</p>
+        <p>{{ post["body"] }}</p>
+        <p>コメント</p>
+        <ul>
+            {% for comment in comments %}
+            <li>
+                {{ comment["user_id"] }} : 
+                {{ comment["comment"] }}
+            </li>
+            {% endfor %}
+        </ul>
+        <form action="{{ url_for("comment_create", post_id=post["id"]) }}" method="post" enctype="multipart/form-data" style="display: flex;">
+            <input id="comment" name="comment" rows="1" placeholder="コメントする">
+            <button type="submit" style="cursor: pointer;">
+                <img src="{{url_for('static', path='/images/paper-airplane.png')}}" alt="">
+            </button>
+        </form>
+        <br>
+        <a href="{{ url_for('post_index') }}"><button>掲示板一覧ページに戻る</button></a>
+    </div>
+{% endblock %}
